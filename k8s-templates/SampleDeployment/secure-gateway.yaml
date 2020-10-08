@@ -1,0 +1,59 @@
+# Based on Istio's official Bookinfo example
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: secure-gateway
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+      minProtocolVersion: TLSV1_2
+      maxProtocolVersion: TLSV1_3
+    hosts:
+    - "${FQDN}"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: gateway-tls-credential
+      minProtocolVersion: TLSV1_2
+      maxProtocolVersion: TLSV1_3
+    hosts:
+    - "${FQDN}"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+  namespace: ${NAMESPACE}
+spec:
+  hosts:
+  - "${FQDN}"
+  gateways:
+  - secure-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage.${NAMESPACE}.svc.cluster.local
+        port:
+          number: 9080

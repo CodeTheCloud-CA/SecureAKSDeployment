@@ -1,0 +1,12 @@
+# This denies all ingress from other namespces and allow all within same namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-inter-namespace
+  namespace: ${NAMESPACE}
+spec:
+  podSelector: # Apply to all pods
+    matchLabels:
+  ingress:
+  - from:
+    - podSelector: {} # Allow all pods within namespace

@@ -1,0 +1,11 @@
+# This a default catch all deny all ingress traffic rule that will
+# apply on all pods that are not matched by the other rules
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: catch-all-deny-ingress
+  namespace: ${NAMESPACE}
+spec:
+  podSelector: {} # Apply to all pods
+  policyTypes:
+  - Ingress

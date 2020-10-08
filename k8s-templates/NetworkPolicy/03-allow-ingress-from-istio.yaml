@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-istio
+  namespace: ${NAMESPACE}
+spec:
+  podSelector: # Apply to all pods
+    matchLabels:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          operator.istio.io/component: Base # Matches all istio control plane components

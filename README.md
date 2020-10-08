@@ -97,7 +97,7 @@ Run the following commands:
 curl -v https://www.google.com
 
 # Should NOT work
-curl -v https://<AKS API Server FQDN>
+curl -v -k https://<AKS API Server FQDN>
 
 # Should work
 curl -v https://dev.azure.com

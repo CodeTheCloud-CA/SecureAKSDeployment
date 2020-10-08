@@ -76,17 +76,21 @@ Remove the annotation from the deployment so you can use the pod again in the ne
 
 - You can also run another deployment creating a different namespace and test connectivity between the two namespaces directly, it should **NOT** work.
 
-### 5. Test Azure Firewall Threat Intelligence 
+### 5. Test AAD Integration and K8s RBAC
+
+Login to Azure with two different users one in the **aks-admins** group and one in the **aks-readers** group, the first one should have full control as cluster admin and second one only has ability to list pods in the default namespace
+
+### 6. Test Azure Firewall Threat Intelligence 
 
 Exec into any pod that has curl in it (for example ratings-v1) and curl to http://testmaliciousdomain.eastus.cloudapp.azure.com, it won't be responsive but it will show up in the Azure Firewall monitoring Workbook on Azure.
 
-### 6. Test DNAT rule for SSH to Jumpbox
+### 7. Test DNAT rule for SSH to Jumpbox
 
 SSH to Jumpbox using the command `ssh jbuser@<Azure Firewall PIP> -p 2222` it should work.
 
 Turn on VPN to change your public IP and try again, it should **NOT** work.
 
-### 7. Test outbound access from Jumpbox
+### 8. Test outbound access from Jumpbox
 
 SSH to Jumpbox using the command `ssh jbuser@<Azure Firewall PIP> -p 2222`
 
@@ -96,7 +100,7 @@ Run the following commands:
 # Should NOT work
 curl -v https://www.google.com
 
-# Should NOT work
+# Should work
 curl -v -k https://<AKS API Server FQDN>
 
 # Should work

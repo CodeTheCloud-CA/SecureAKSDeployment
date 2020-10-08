@@ -106,6 +106,9 @@ curl -v -k https://<AKS API Server FQDN>
 # Should work
 curl -v https://dev.azure.com
 ``` 
+### 9. Test AKS API IP Allow List
+
+Turn on VPN to change your public IP and try to run kubectl commands on the AKS cluster, it should **NOT** work.
 
 ## License & Copyright
 
